@@ -1,0 +1,227 @@
+/* Reseteamos los márgenes por defecto para que se vea limpio */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #111111;
+}
+
+/* --- ESTILOS DEL MENÚ --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 50px;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #111111;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- ESTILOS DE LA GALERÍA (EL SECRETO) --- */
+.galeria {
+    padding: 0 50px;
+    /* Aquí definimos 3 columnas para pantallas grandes */
+    column-count: 3;
+    column-gap: 20px; 
+}
+
+.galeria img {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px; /* Esquinas ligeramente redondeadas como tu ejemplo */
+    display: block;
+    transition: transform 0.3s ease; /* Para una animación suave */
+}
+
+/* Un pequeño efecto al pasar el mouse por las fotos */
+.galeria img:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+/* --- RESPONSIVO PARA CELULARES --- */
+@media (max-width: 900px) {
+    .galeria { column-count: 2; padding: 0 20px; }
+    header { flex-direction: column; gap: 20px; }
+}
+
+@media (max-width: 600px) {
+    .galeria { column-count: 1; }
+}
+/* --- ESTILOS DEL LIGHTBOX (FOTO AMPLIADA) --- */
+.lightbox {
+    display: none; /* Está oculto hasta que JS diga lo contrario */
+    position: fixed;
+    z-index: 999; /* Para que aparezca por encima de todo */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro al 90% */
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    animation: aparecer 0.3s ease; /* Animación de entrada */
+}
+
+#cerrar {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: white;
+    font-size: 50px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#cerrar:hover {
+    color: #cccccc;
+}
+
+/* Animación para que la foto no aparezca de golpe */
+@keyframes aparecer {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+/* --- ESTILOS DE LOS FILTROS --- */
+.filtros {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+.btn-filtro {
+    padding: 8px 24px;
+    border: 1px solid #111;
+    background-color: transparent;
+    color: #111;
+    cursor: pointer;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-filtro:hover, 
+.btn-filtro.activo {
+    background-color: #111;
+    color: #fff;
+}
+
+/* Esta es la clase clave que nuestro JavaScript usa para desaparecer las fotos */
+.oculto {
+    display: none !important;
+}
+/* --- NAVEGACIÓN SUAVE PARA EL MENÚ --- */
+html {
+    scroll-behavior: smooth; 
+}
+
+/* --- ANIMACIÓN SUTIL DE ENTRADA DE LAS FOTOS --- */
+@keyframes aparecerSuave {
+    0% {
+        opacity: 0;
+        transform: translateY(20px); 
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); 
+    }
+}
+
+.animar-entrada {
+    animation: aparecerSuave 0.6s ease-out forwards;
+}
+
+/* --- ESTILOS DE LA SECCIÓN CONTACTO --- */
+.seccion-contacto {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: #fafafa;
+    margin-top: 60px;
+}
+
+.seccion-contacto h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.seccion-contacto p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.btn-correo {
+    background-color: #111;
+    color: #fff;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-correo:hover {
+    background-color: #444;
+}
+/* --- ESTILOS DE LAS FLECHAS DEL LIGHTBOX --- */
+.flecha {
+    color: white;
+    font-size: 60px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none; /* Evita que el texto se seleccione por accidente */
+    transition: color 0.3s ease;
+    padding: 20px;
+}
+
+.flecha:hover {
+    color: #cccccc;
+}
+
+#flecha-izq {
+    left: 20px; /* Separación desde el borde izquierdo */
+}
+
+#flecha-der {
+    right: 20px; /* Separación desde el borde derecho */
+}
+
+/* Modificamos el botón de cerrar para que no se pegue tanto arriba */
+#cerrar {
+    z-index: 1000;
+}

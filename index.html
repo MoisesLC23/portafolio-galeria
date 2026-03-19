@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Fotográfico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="portafolio"> 
+
+    <header>
+        <h1 class="logo">Moisés Studio</h1>
+        <nav>
+            <ul>
+                <li><a href="#portafolio">Portafolio</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="filtros">
+        <button class="btn-filtro activo" data-filtro="todos">Todos</button>
+        <button class="btn-filtro" data-filtro="retratos">Retratos & Moda</button>
+        <button class="btn-filtro" data-filtro="eventos">Conciertos & Eventos</button>
+        <button class="btn-filtro" data-filtro="arquitectura">Arquitectura & Paisajes</button>
+    </div>
+
+    <main class="galeria">
+        <img src="img/WhatsApp Image 2026-02-24 at 9.12.44 PM (1).jpeg" alt="Fotografía 1" data-categoria="retratos" class="animar-entrada">
+        <img src="img/WhatsApp Image 2026-02-24 at 9.12.44 PM (2).jpeg" alt="Fotografía 2" data-categoria="retratos" class="animar-entrada">
+        <img src="img/WhatsApp Image 2026-02-24 at 9.12.44 PM.jpeg"     alt="Fotografía 3" data-categoria="retratos" class="animar-entrada">
+        <img src="img/WhatsApp Image 2026-02-25 at 2.27.43 PM (2).jpeg" alt="Fotografía 4" data-categoria="retratos" class="animar-entrada">
+        <img src="img/WhatsApp Image 2026-02-25 at 2.27.46 PM (1).jpeg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
+        <img src="img/WhatsApp Image 2026-02-25 at 2.27.49 PM (1).jpeg" alt="Fotografía 6" data-categoria="retratos" class="animar-entrada">
+
+        <img src="img/foto_arquitectura.jpg" alt="Fotografía 5" data-categoria="arquitectura" class="animar-entrada">
+        <img src="img/foto_chica.jpg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
+        <img src="img/foto_concierto.jpg" alt="Fotografía 6" data-categoria="eventos" class="animar-entrada">
+    </main>
+
+    <footer id="contacto" class="seccion-contacto">
+        <h2>¿Trabajamos juntos?</h2>
+        <p>Escríbeme para cotizar tu próxima sesión de fotos o proyecto gráfico.</p>
+        <a href="mailto:tuamigo@correo.com" class="btn-correo">Enviar un correo</a>
+    </footer>
+
+    <div id="lightbox" class="lightbox">
+        <span id="cerrar">&times;</span>
+        <span id="flecha-izq" class="flecha">&#10094;</span>
+        <img id="foto-ampliada" src="" alt="Ampliada">
+        <span id="flecha-der" class="flecha">&#10095;</span>
+    </div>
+
+    <script>
+        const imagenes = document.querySelectorAll('.galeria img');
+        const lightbox = document.getElementById('lightbox');
+        const fotoAmpliada = document.getElementById('foto-ampliada');
+        const botonCerrar = document.getElementById('cerrar');
+        const botonesFiltro = document.querySelectorAll('.btn-filtro');
+        
+        // Variables de navegación de la galería
+        const flechaIzq = document.getElementById('flecha-izq');
+        const flechaDer = document.getElementById('flecha-der');
+        let indiceActual = 0;
+        let imagenesVisibles = []; 
+
+        // Actualiza la lista de imágenes que NO están ocultas por los filtros
+        function actualizarImagenesVisibles() {
+            imagenesVisibles = Array.from(imagenes).filter(img => !img.classList.contains('oculto'));
+        }
+
+        // 1. Abrir foto
+        imagenes.forEach(img => {
+            img.addEventListener('click', () => {
+                actualizarImagenesVisibles();
+                indiceActual = imagenesVisibles.indexOf(img); // Buscamos qué número de foto es
+                
+                lightbox.style.display = 'flex';
+                fotoAmpliada.src = img.src; 
+            });
+        });
+
+        // 2. Cerrar (X o fondo negro)
+        botonCerrar.addEventListener('click', () => { lightbox.style.display = 'none'; });
+        lightbox.addEventListener('click', (e) => {
+            // Se cierra solo si haces clic en el fondo oscuro, no en las flechas ni en la foto
+            if (e.target === lightbox) { lightbox.style.display = 'none'; }
+        });
+
+        // 3. FLECHAS DE NAVEGACIÓN
+        flechaIzq.addEventListener('click', () => {
+            indiceActual--;
+            if (indiceActual < 0) { indiceActual = imagenesVisibles.length - 1; } // Vuelve al final
+            fotoAmpliada.src = imagenesVisibles[indiceActual].src;
+        });
+
+        flechaDer.addEventListener('click', () => {
+            indiceActual++;
+            if (indiceActual >= imagenesVisibles.length) { indiceActual = 0; } // Vuelve al inicio
+            fotoAmpliada.src = imagenesVisibles[indiceActual].src;
+        });
+
+        // 4. Sistema de Filtros con Animación
+        botonesFiltro.forEach(boton => {
+            boton.addEventListener('click', () => {
+                botonesFiltro.forEach(btn => btn.classList.remove('activo'));
+                boton.classList.add('activo');
+
+                const filtroElegido = boton.getAttribute('data-filtro');
+
+                imagenes.forEach(img => {
+                    const categoriaImg = img.getAttribute('data-categoria');
+
+                    if (filtroElegido === 'todos' || filtroElegido === categoriaImg) {
+                        img.classList.remove('oculto');
+                        
+                        img.classList.remove('animar-entrada');
+                        void img.offsetWidth; 
+                        img.classList.add('animar-entrada');
+                    } else {
+                        img.classList.add('oculto');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
