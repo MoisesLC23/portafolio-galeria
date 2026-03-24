@@ -6,9 +6,16 @@
     font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* --- NAVEGACIÓN SUAVE PARA EL MENÚ --- */
+html {
+    scroll-behavior: smooth; 
+}
+
+/* Transición suave para cambiar de blanco a negro */
 body {
     background-color: #ffffff;
     color: #111111;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* --- ESTILOS DEL MENÚ --- */
@@ -16,6 +23,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* Mantenemos tu padding original */
     padding: 30px 50px;
     margin-bottom: 20px;
 }
@@ -28,7 +36,10 @@ header {
 nav ul {
     list-style: none;
     display: flex;
-    gap: 30px;
+    /* Reducimos el gap de 30px a 20px para un menú más apretado con el switch */
+    gap: 20px;
+    /* --- CORRECCIÓN CLAVE: Alinea los textos verticalmente con el interruptor --- */
+    align-items: center; 
 }
 
 nav a {
@@ -39,79 +50,122 @@ nav a {
     letter-spacing: 1px;
 }
 
-/* --- ESTILOS DE LA GALERÍA (EL SECRETO) --- */
-.galeria {
-    padding: 0 50px;
-    /* Aquí definimos 3 columnas para pantallas grandes */
-    column-count: 3;
-    column-gap: 20px; 
+/* --- NUEVO INTERRUPTOR MODO NOCHE (Ajustado a tamaño más pequeño) --- */
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    /* Reducido tamaño original de 60x30 a 50x26 para que sea sutil */
+    width: 50px;
+    height: 26px;
 }
 
-.galeria img {
-    width: 100%;
-    margin-bottom: 20px;
-    border-radius: 8px; /* Esquinas ligeramente redondeadas como tu ejemplo */
-    display: block;
-    transition: transform 0.3s ease; /* Para una animación suave */
+/* Ocultamos el checkbox feo predeterminado de Windows */
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
-/* Un pequeño efecto al pasar el mouse por las fotos */
-.galeria img:hover {
-    transform: scale(1.02);
+/* El fondo en forma de píldora */
+.slider-theme {
+    position: absolute;
     cursor: pointer;
-}
-
-/* --- RESPONSIVO PARA CELULARES --- */
-@media (max-width: 900px) {
-    .galeria { column-count: 2; padding: 0 20px; }
-    header { flex-direction: column; gap: 20px; }
-}
-
-@media (max-width: 600px) {
-    .galeria { column-count: 1; }
-}
-/* --- ESTILOS DEL LIGHTBOX (FOTO AMPLIADA) --- */
-.lightbox {
-    display: none; /* Está oculto hasta que JS diga lo contrario */
-    position: fixed;
-    z-index: 999; /* Para que aparezca por encima de todo */
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro al 90% */
-    justify-content: center;
+    right: 0;
+    bottom: 0;
+    background-color: #e4e4e4;
+    transition: .4s;
+    border-radius: 34px;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
 }
 
-.lightbox img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 4px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    animation: aparecer 0.3s ease; /* Animación de entrada */
-}
-
-#cerrar {
+/* El círculo blanco que se desliza (Ajustado) */
+.slider-theme:before {
     position: absolute;
-    top: 20px;
-    right: 40px;
-    color: white;
-    font-size: 50px;
-    cursor: pointer;
-    transition: color 0.3s ease;
+    content: "";
+    /* Reducido tamaño */
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-#cerrar:hover {
-    color: #cccccc;
+/* Tamaño de los íconos (Reducido) */
+.icon-sun, .icon-moon {
+    width: 14px;
+    height: 14px;
+    transition: .4s;
+    z-index: 1;
 }
 
-/* Animación para que la foto no aparezca de golpe */
-@keyframes aparecer {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+/* Estado inicial (Claro) */
+.icon-sun { color: #f39c12; opacity: 1; }
+.icon-moon { color: #cccccc; opacity: 0; }
+
+/* ESTADOS CUANDO LE DAS CLIC (Noche) */
+input:checked + .slider-theme {
+    background-color: #333333;
 }
-/* --- ESTILOS DE LOS FILTROS --- */
+
+input:checked + .slider-theme:before {
+    /* Ajustado translateX para el tamaño más pequeño */
+    transform: translateX(24px); 
+}
+
+input:checked + .slider-theme .icon-sun {
+    opacity: 0; /* Oculta el sol */
+}
+
+input:checked + .slider-theme .icon-moon {
+    opacity: 1; /* Muestra la luna */
+    color: #f1c40f;
+}
+
+/* --- REGLAS DEL MODO OSCURO (Dark Mode) --- */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode nav a, 
+body.dark-mode .logo {
+    color: #ffffff;
+}
+
+body.dark-mode .btn-filtro {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+body.dark-mode .btn-filtro:hover, 
+body.dark-mode .btn-filtro.activo {
+    background-color: #ffffff;
+    color: #121212; 
+}
+
+body.dark-mode .seccion-contacto {
+    background-color: #1e1e1e; 
+}
+
+body.dark-mode .btn-correo {
+    background-color: #ffffff;
+    color: #121212;
+}
+
+body.dark-mode .btn-correo:hover {
+    background-color: #cccccc;
+}
+
+/* --- ESTILOS DE LOS FILTROS (Ya existentes) --- */
 .filtros {
     display: flex;
     justify-content: center;
@@ -133,35 +187,126 @@ nav a {
     transition: all 0.3s ease;
 }
 
-.btn-filtro:hover, 
-.btn-filtro.activo {
+.btn-filtro:hover, .btn-filtro.activo {
     background-color: #111;
     color: #fff;
 }
 
-/* Esta es la clase clave que nuestro JavaScript usa para desaparecer las fotos */
 .oculto {
     display: none !important;
 }
-/* --- NAVEGACIÓN SUAVE PARA EL MENÚ --- */
-html {
-    scroll-behavior: smooth; 
+
+/* --- ESTILOS DE LA GALERÍA (EL SECRETO) --- */
+.galeria {
+    padding: 0 50px;
+    /* Aquí definimos 3 columnas para pantallas grandes */
+    column-count: 3;
+    column-gap: 20px; 
 }
 
-/* --- ANIMACIÓN SUTIL DE ENTRADA DE LAS FOTOS --- */
-@keyframes aparecerSuave {
-    0% {
-        opacity: 0;
-        transform: translateY(20px); 
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0); 
-    }
+.galeria img {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px; /* Esquinas ligeramente redondeadas */
+    display: block;
+    transition: transform 0.3s ease; 
 }
 
-.animar-entrada {
-    animation: aparecerSuave 0.6s ease-out forwards;
+/* Pequeño efecto al pasar el mouse por las fotos */
+.galeria img:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+/* --- ESTILOS DEL DESLIZADOR ANTES/DESPUÉS V2.0 --- */
+.antes-despues {
+    column-span: all; 
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    line-height: 0; 
+}
+
+/* 👇 ESTA ES LA REGLA CLAVE QUE TE FALTABA 👇 */
+.antes-despues img {
+    margin-bottom: 0 !important; 
+    transform: none !important; 
+    border-radius: 0 !important;
+}
+/* 👆 ======================================= 👆 */
+
+.img-fondo {
+    width: 100%;
+    height: auto; /* <-- Asegura que no se estire raro */
+    display: block;
+}
+
+.img-frente {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); 
+    pointer-events: none; 
+}
+
+.slider-rango {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; 
+    cursor: ew-resize;
+    z-index: 10;
+    margin: 0;
+}
+
+.linea-divisora {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 4px;
+    height: 100%;
+    background: white;
+    transform: translateX(-50%);
+    pointer-events: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.flechitas {
+    background: white;
+    color: #111;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* MODO OSCURO PARA LAS FLECHITAS DEL DESLIZADOR */
+body.dark-mode .flechitas {
+    background: #333333; 
+    color: white; 
+}
+
+/* --- RESPONSIVO PARA CELULARES --- */
+@media (max-width: 900px) {
+    .galeria { column-count: 2; padding: 0 20px; }
+    header { flex-direction: column; gap: 20px; padding: 20px; text-align: center; }
+    nav ul { flex-direction: column; gap: 10px; }
+}
+
+@media (max-width: 600px) {
+    .galeria { column-count: 1; }
 }
 
 /* --- ESTILOS DE LA SECCIÓN CONTACTO --- */
@@ -195,33 +340,49 @@ html {
 .btn-correo:hover {
     background-color: #444;
 }
+
+/* --- ESTILOS DEL LIGHTBOX (Ya existentes) --- */
+.lightbox {
+    display: none; 
+    position: fixed;
+    z-index: 999; 
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); 
+    justify-content: center; align-items: center;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    animation: aparecer 0.3s ease; 
+}
+
+#cerrar {
+    position: absolute;
+    top: 20px; right: 40px;
+    color: white; font-size: 50px; cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 1000;
+}
+
+#cerrar:hover { color: #cccccc; }
+
+@keyframes aparecer {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
 /* --- ESTILOS DE LAS FLECHAS DEL LIGHTBOX --- */
 .flecha {
-    color: white;
-    font-size: 60px;
-    font-weight: bold;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    user-select: none; /* Evita que el texto se seleccione por accidente */
-    transition: color 0.3s ease;
+    color: white; font-size: 60px; font-weight: bold;
+    position: absolute; top: 50%; transform: translateY(-50%);
+    cursor: pointer; user-select: none; transition: color 0.3s ease;
     padding: 20px;
 }
 
-.flecha:hover {
-    color: #cccccc;
-}
-
-#flecha-izq {
-    left: 20px; /* Separación desde el borde izquierdo */
-}
-
-#flecha-der {
-    right: 20px; /* Separación desde el borde derecho */
-}
-
-/* Modificamos el botón de cerrar para que no se pegue tanto arriba */
-#cerrar {
-    z-index: 1000;
-}
+.flecha:hover { color: #cccccc; }
+#flecha-izq { left: 20px; }
+#flecha-der { right: 20px; }

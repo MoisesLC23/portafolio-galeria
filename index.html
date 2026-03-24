@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio Fotográfico</title>
+    <title>Portafolio Fotográfico - Moisés Studio V2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body id="portafolio"> 
@@ -14,6 +14,15 @@
             <ul>
                 <li><a href="#portafolio">Portafolio</a></li>
                 <li><a href="#contacto">Contacto</a></li>
+                <li>
+                    <label class="theme-switch" for="checkbox-noche" title="Cambiar tema">
+                        <input type="checkbox" id="checkbox-noche" />
+                        <div class="slider-theme">
+                            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                        </div>
+                    </label>
+                </li>
             </ul>
         </nav>
     </header>
@@ -23,6 +32,7 @@
         <button class="btn-filtro" data-filtro="retratos">Retratos & Moda</button>
         <button class="btn-filtro" data-filtro="eventos">Conciertos & Eventos</button>
         <button class="btn-filtro" data-filtro="arquitectura">Arquitectura & Paisajes</button>
+        <button class="btn-filtro" data-filtro="retoque">Retoque Digital</button>
     </div>
 
     <main class="galeria">
@@ -32,10 +42,21 @@
         <img src="img/WhatsApp Image 2026-02-25 at 2.27.43 PM (2).jpeg" alt="Fotografía 4" data-categoria="retratos" class="animar-entrada">
         <img src="img/WhatsApp Image 2026-02-25 at 2.27.46 PM (1).jpeg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
         <img src="img/WhatsApp Image 2026-02-25 at 2.27.49 PM (1).jpeg" alt="Fotografía 6" data-categoria="retratos" class="animar-entrada">
-
         <img src="img/foto_arquitectura.jpg" alt="Fotografía 5" data-categoria="arquitectura" class="animar-entrada">
         <img src="img/foto_chica.jpg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
         <img src="img/foto_concierto.jpg" alt="Fotografía 6" data-categoria="eventos" class="animar-entrada">
+
+        <div class="antes-despues animar-entrada oculto" data-categoria="retoque">
+            <img src="img/sunset-playa-antes.jpeg" alt="Sin editar" class="img-fondo">
+            <img src="img/sunset-playa-despues.jpeg" alt="Editada" class="img-frente">
+
+
+            <input type="range" min="0" max="100" value="50" class="slider-rango">
+            
+            <div class="linea-divisora">
+                <div class="flechitas">◀ ▶</div>
+            </div>
+        </div>
     </main>
 
     <footer id="contacto" class="seccion-contacto">
@@ -52,7 +73,13 @@
     </div>
 
     <script>
-        const imagenes = document.querySelectorAll('.galeria img');
+        // --- VARIABLES ACTUALIZADAS V2.0 ---
+        
+        // Separamos las fotos normales (que abren lightbox) del deslizador
+        const fotosNormales = document.querySelectorAll('.galeria > img');
+        // Capturamos TODOS los elementos que se pueden filtrar (fotos + deslizador)
+        const elementosFiltrables = document.querySelectorAll('.galeria > img, .galeria > .antes-despues');
+        
         const lightbox = document.getElementById('lightbox');
         const fotoAmpliada = document.getElementById('foto-ampliada');
         const botonCerrar = document.getElementById('cerrar');
@@ -64,16 +91,17 @@
         let indiceActual = 0;
         let imagenesVisibles = []; 
 
-        // Actualiza la lista de imágenes que NO están ocultas por los filtros
+        // Actualiza la lista de imágenes que NO están ocultas (solo para lightbox)
         function actualizarImagenesVisibles() {
-            imagenesVisibles = Array.from(imagenes).filter(img => !img.classList.contains('oculto'));
+            // Solo filtramos las etiquetas <img> normales, no el div antes-despues
+            imagenesVisibles = Array.from(fotosNormales).filter(img => !img.classList.contains('oculto'));
         }
 
-        // 1. Abrir foto
-        imagenes.forEach(img => {
+        // 1. Abrir foto (Solo funciona para las fotos normales)
+        fotosNormales.forEach(img => {
             img.addEventListener('click', () => {
                 actualizarImagenesVisibles();
-                indiceActual = imagenesVisibles.indexOf(img); // Buscamos qué número de foto es
+                indiceActual = imagenesVisibles.indexOf(img);
                 
                 lightbox.style.display = 'flex';
                 fotoAmpliada.src = img.src; 
@@ -83,24 +111,25 @@
         // 2. Cerrar (X o fondo negro)
         botonCerrar.addEventListener('click', () => { lightbox.style.display = 'none'; });
         lightbox.addEventListener('click', (e) => {
-            // Se cierra solo si haces clic en el fondo oscuro, no en las flechas ni en la foto
             if (e.target === lightbox) { lightbox.style.display = 'none'; }
         });
 
         // 3. FLECHAS DE NAVEGACIÓN
         flechaIzq.addEventListener('click', () => {
+            if (imagenesVisibles.length === 0) return;
             indiceActual--;
-            if (indiceActual < 0) { indiceActual = imagenesVisibles.length - 1; } // Vuelve al final
+            if (indiceActual < 0) { indiceActual = imagenesVisibles.length - 1; }
             fotoAmpliada.src = imagenesVisibles[indiceActual].src;
         });
 
         flechaDer.addEventListener('click', () => {
+            if (imagenesVisibles.length === 0) return;
             indiceActual++;
-            if (indiceActual >= imagenesVisibles.length) { indiceActual = 0; } // Vuelve al inicio
+            if (indiceActual >= imagenesVisibles.length) { indiceActual = 0; }
             fotoAmpliada.src = imagenesVisibles[indiceActual].src;
         });
 
-        // 4. Sistema de Filtros con Animación
+        // 4. SISTEMA DE FILTROS ACTUALIZADO V2.0 (Controla fotos y deslizador)
         botonesFiltro.forEach(boton => {
             boton.addEventListener('click', () => {
                 botonesFiltro.forEach(btn => btn.classList.remove('activo'));
@@ -108,19 +137,62 @@
 
                 const filtroElegido = boton.getAttribute('data-filtro');
 
-                imagenes.forEach(img => {
-                    const categoriaImg = img.getAttribute('data-categoria');
+                elementosFiltrables.forEach(elemento => {
+                    const categoria = elemento.getAttribute('data-categoria');
 
-                    if (filtroElegido === 'todos' || filtroElegido === categoriaImg) {
-                        img.classList.remove('oculto');
+                    if (filtroElegido === 'todos' || filtroElegido === categoria) {
+                        elemento.classList.remove('oculto');
                         
-                        img.classList.remove('animar-entrada');
-                        void img.offsetWidth; 
-                        img.classList.add('animar-entrada');
+                        elemento.classList.remove('animar-entrada');
+                        void elemento.offsetWidth; 
+                        elemento.classList.add('animar-entrada');
                     } else {
-                        img.classList.add('oculto');
+                        elemento.classList.add('oculto');
                     }
                 });
+            });
+        });
+
+        // 5. NUEVO: LÓGICA MODO NOCHE V2.0 (Nuevo Switch)
+        const toggleNoche = document.getElementById('checkbox-noche');
+        
+        // Comprobar si ya estaba activo (opcional, para persistencia local)
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            toggleNoche.checked = true;
+        }
+
+        toggleNoche.addEventListener('change', () => {
+            if (toggleNoche.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+// 6. CORRECCIÓN V2.0: Lógica invertida para que 'Antes' esté a la izquierda
+        // y 'Después' esté a la derecha
+        const contenedoresSlider = document.querySelectorAll('.antes-despues');
+        
+        contenedoresSlider.forEach(contenedor => {
+            const slider = contenedor.querySelector('.slider-rango');
+            const imgFrente = contenedor.querySelector('.img-frente');
+            const linea = contenedor.querySelector('.linea-divisora');
+
+            // Escuchamos el evento 'input' mientras arrastramos el slider
+            slider.addEventListener('input', (e) => {
+                const porcentaje = e.target.value;
+                
+                // --- CAMBIO CLAVE AQUÍ ---
+                // Definimos el recorte empezando en el porcentaje actual hacia la derecha (100%)
+                // polygon(X% 0, 100% 0, 100% 100%, X% 100%)
+                // Esto revela la imagen de arriba ('Después') moviéndose de derecha a izquierda
+                imgFrente.style.clipPath = `polygon(${porcentaje}% 0, 100% 0, 100% 100%, ${porcentaje}% 100%)`;
+                
+                // Movemos la línea divisora visual
+                linea.style.left = `${porcentaje}%`;
             });
         });
     </script>
