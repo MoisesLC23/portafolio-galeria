@@ -9,7 +9,7 @@
 <body id="portafolio"> 
 
     <header>
-        <h1 class="logo">Moisés Studio</h1>
+        <h1 class="logo">Mikel Studio</h1>
         <nav>
             <ul>
                 <li><a href="#portafolio">Portafolio</a></li>
@@ -35,29 +35,54 @@
         <button class="btn-filtro" data-filtro="retoque">Retoque Digital</button>
     </div>
 
-    <main class="galeria">
-        <img src="img/WhatsApp Image 2026-02-24 at 9.12.44 PM (1).jpeg" alt="Fotografía 1" data-categoria="retratos" class="animar-entrada">
-        <img src="img/WhatsApp Image 2026-02-24 at 9.12.44 PM (2).jpeg" alt="Fotografía 2" data-categoria="retratos" class="animar-entrada">
-        <img src="img/WhatsApp Image 2026-02-24 at 9.12.44 PM.jpeg"     alt="Fotografía 3" data-categoria="retratos" class="animar-entrada">
-        <img src="img/WhatsApp Image 2026-02-25 at 2.27.43 PM (2).jpeg" alt="Fotografía 4" data-categoria="retratos" class="animar-entrada">
-        <img src="img/WhatsApp Image 2026-02-25 at 2.27.46 PM (1).jpeg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
-        <img src="img/WhatsApp Image 2026-02-25 at 2.27.49 PM (1).jpeg" alt="Fotografía 6" data-categoria="retratos" class="animar-entrada">
-        <img src="img/foto_arquitectura.jpg" alt="Fotografía 5" data-categoria="arquitectura" class="animar-entrada">
-        <img src="img/foto_chica.jpg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
-        <img src="img/foto_concierto.jpg" alt="Fotografía 6" data-categoria="eventos" class="animar-entrada">
+<main class="galeria">
 
-        <div class="antes-despues animar-entrada oculto" data-categoria="retoque">
-            <img src="img/sunset-playa-antes.jpeg" alt="Sin editar" class="img-fondo">
-            <img src="img/sunset-playa-despues.jpeg" alt="Editada" class="img-frente">
+    
+    <img src="img/foto_chica.jpg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
+    <img src="img/foto_chico_amarillo.jpg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
+    <img src="img/chico_pelo_parao.jpg" alt="Fotografía 5" data-categoria="retratos" class="animar-entrada">
+    <img src="img/foto_moises1.jpeg" alt="Fotografía 3" data-categoria="retratos" class="animar-entrada">
+    <img src="img/foto_serio.jpg" alt="Fotografía 6" data-categoria="retratos" class="animar-entrada">
+    <img src="img/foto_arquitectura.jpg" alt="Fotografía 5" data-categoria="arquitectura" class="animar-entrada">
+    <img src="img/foto_concierto.jpg" alt="Fotografía 6" data-categoria="eventos" class="animar-entrada">
+    <img src="img/IGLESIA-NOCHE-DESPUES.jpeg" alt="Fotografía 5" data-categoria="arquitectura" class="animar-entrada">
 
 
-            <input type="range" min="0" max="100" value="50" class="slider-rango">
-            
-            <div class="linea-divisora">
-                <div class="flechitas">◀ ▶</div>
-            </div>
+    <div class="antes-despues animar-entrada oculto" data-categoria="retoque">
+        <img src="img/sunset-playa-antes.jpeg" alt="Antes: Sunset Playa Crudo" class="img-fondo">
+        <img src="img/sunset-playa-despues.jpeg" alt="Después: Sunset Playa Retocado" class="img-frente">
+
+        <input type="range" min="0" max="100" value="50" class="slider-rango" aria-label="Deslizador de Antes y Después">
+        
+        <div class="linea-divisora">
+            <div class="flechitas" aria-hidden="true">◀ ▶</div>
         </div>
-    </main>
+    </div>
+
+    <div class="antes-despues animar-entrada oculto" data-categoria="retoque">
+        <img src="img/SUNSET-PISTA-ANTES.jpeg" alt="Antes: Sunset Pista Crudo" class="img-fondo">
+        <img src="img/SUNSET-PISTA-DESPUES.jpeg" alt="Después: Sunset Pista Retocado" class="img-frente">
+
+        <input type="range" min="0" max="100" value="50" class="slider-rango" aria-label="Deslizador de Antes y Después">
+        
+        <div class="linea-divisora">
+            <div class="flechitas" aria-hidden="true">◀ ▶</div>
+        </div>
+    </div>
+
+    
+    <div class="antes-despues animar-entrada oculto" data-categoria="retoque">
+        <img src="img/IGLESIA-NOCHE-ANTES.jpeg" alt="Antes: Sunset Playa Crudo" class="img-fondo">
+        <img src="img/IGLESIA-NOCHE-DESPUES.jpeg" alt="Después: Sunset Playa Retocado" class="img-frente">
+
+        <input type="range" min="0" max="100" value="50" class="slider-rango" aria-label="Deslizador de Antes y Después">
+        
+        <div class="linea-divisora">
+            <div class="flechitas" aria-hidden="true">◀ ▶</div>
+        </div>
+    </div>
+
+</main>
 
     <footer id="contacto" class="seccion-contacto">
         <h2>¿Trabajamos juntos?</h2>
@@ -72,7 +97,7 @@
         <span id="flecha-der" class="flecha">&#10095;</span>
     </div>
 
-    <script>
+<script>
         // --- VARIABLES ACTUALIZADAS V2.0 ---
         
         // Separamos las fotos normales (que abren lightbox) del deslizador
@@ -84,6 +109,9 @@
         const fotoAmpliada = document.getElementById('foto-ampliada');
         const botonCerrar = document.getElementById('cerrar');
         const botonesFiltro = document.querySelectorAll('.btn-filtro');
+        
+        // --- AÑADIDO: Seleccionamos el contenedor principal de la galería ---
+        const galeriaMain = document.querySelector('.galeria');
         
         // Variables de navegación de la galería
         const flechaIzq = document.getElementById('flecha-izq');
@@ -129,7 +157,7 @@
             fotoAmpliada.src = imagenesVisibles[indiceActual].src;
         });
 
-        // 4. SISTEMA DE FILTROS ACTUALIZADO V2.0 (Controla fotos y deslizador)
+ // 4. SISTEMA DE FILTROS ACTUALIZADO V2.0 (Controla fotos y deslizador)
         botonesFiltro.forEach(boton => {
             boton.addEventListener('click', () => {
                 botonesFiltro.forEach(btn => btn.classList.remove('activo'));
@@ -137,12 +165,27 @@
 
                 const filtroElegido = boton.getAttribute('data-filtro');
 
+                // Revisar cada elemento una por una (fotos y deslizador)
                 elementosFiltrables.forEach(elemento => {
                     const categoria = elemento.getAttribute('data-categoria');
 
-                    if (filtroElegido === 'todos' || filtroElegido === categoria) {
+                    // Definimos las condiciones claras para cada caso
+                    const esBotonRetoque = filtroElegido === 'retoque';
+                    const esBotonTodos = filtroElegido === 'todos';
+                    const coincideCategoria = filtroElegido === categoria;
+                    
+                    let mostrar = false;
+                    
+                    if (esBotonRetoque) {
+                        mostrar = coincideCategoria;
+                    } else if (esBotonTodos) {
+                        mostrar = (categoria !== 'retoque');
+                    } else {
+                        mostrar = coincideCategoria;
+                    }
+
+                    if (mostrar) {
                         elemento.classList.remove('oculto');
-                        
                         elemento.classList.remove('animar-entrada');
                         void elemento.offsetWidth; 
                         elemento.classList.add('animar-entrada');
@@ -172,7 +215,7 @@
             }
         });
 
-// 6. CORRECCIÓN V2.0: Lógica invertida para que 'Antes' esté a la izquierda
+        // 6. CORRECCIÓN V2.0: Lógica invertida para que 'Antes' esté a la izquierda
         // y 'Después' esté a la derecha
         const contenedoresSlider = document.querySelectorAll('.antes-despues');
         
@@ -185,7 +228,6 @@
             slider.addEventListener('input', (e) => {
                 const porcentaje = e.target.value;
                 
-                // --- CAMBIO CLAVE AQUÍ ---
                 // Definimos el recorte empezando en el porcentaje actual hacia la derecha (100%)
                 // polygon(X% 0, 100% 0, 100% 100%, X% 100%)
                 // Esto revela la imagen de arriba ('Después') moviéndose de derecha a izquierda

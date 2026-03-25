@@ -386,3 +386,110 @@ body.dark-mode .flechitas {
 .flecha:hover { color: #cccccc; }
 #flecha-izq { left: 20px; }
 #flecha-der { right: 20px; }
+
+/* =========================================================
+   ESTILOS DE LA GALERÍA Y RETOQUE DIGITAL (MASONRY LAYOUT)
+   ========================================================= */
+
+/* Estilo base de la galería */
+.galeria {
+    column-count: 3;
+    column-gap: 20px;
+    padding: 0 50px;
+}
+
+/* Las fotos normales de la galería */
+.galeria img {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px; 
+    display: block;
+    transition: transform 0.3s ease; 
+    /* Esta regla evita que una foto se parta a la mitad entre dos columnas */
+    break-inside: avoid; 
+}
+
+.galeria img:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+/* === ESTILOS DEL DESLIZADOR ANTES/DESPUÉS === */
+.antes-despues {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px; /* Mismo margen que las fotos normales */
+    border-radius: 8px;
+    overflow: hidden;
+    line-height: 0; 
+    /* inline-block y avoid son la clave para que fluya en las columnas como una imagen más */
+    display: inline-block; 
+    break-inside: avoid; 
+}
+
+/* Evita heredar márgenes dobles o zoom de la galería principal */
+.antes-despues img {
+    margin-bottom: 0 !important; 
+    transform: none !important; 
+    border-radius: 0 !important;
+}
+
+.img-fondo {
+    width: 100%;
+    height: auto; /* La altura natural de la foto dicta la altura del bloque entero */
+    display: block;
+}
+
+.img-frente {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); 
+    pointer-events: none; 
+}
+
+.slider-rango {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; 
+    cursor: ew-resize;
+    z-index: 10;
+    margin: 0;
+}
+
+.linea-divisora {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 4px;
+    height: 100%;
+    background: white;
+    transform: translateX(-50%);
+    pointer-events: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.flechitas {
+    background: white;
+    color: #111;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Para el modo oscuro de las flechitas */
+body.dark-mode .flechitas {
+    background: #333333; 
+    color: white; 
+}
